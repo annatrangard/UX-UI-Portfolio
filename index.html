@@ -1,0 +1,2105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | UX/UI Designer</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 
+           ========================================
+           CSS VARIABLES & THEME
+           ========================================
+        */
+        :root {
+            /* Palette */
+            --bg-cream: #F1EDE4;
+            --bg-beige: #F1EDE4;
+            --tan: #D2B48C;
+            --sand: #C2B280;
+            --caramel: #AF8A54;
+            --espresso: #3D2B1F;
+            --ink: #1A1A1A;
+            
+            /* Typography */
+            --f-serif: 'Cormorant Garamond', serif;
+            --f-sans: 'DM Sans', sans-serif;
+            
+            /* Spacing */
+            --gutter: 5vw;
+            --section-padding: 120px;
+
+            /* Transitions */
+            --theme-transition: background-color 0.8s cubic-bezier(0.25, 1, 0.5, 1), color 0.8s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            --line: rgba(61, 43, 31, 0.1);
+        }
+
+        body.dark-mode {
+            --bg-cream: #121212;
+            --bg-beige: #121212;
+            --espresso: #F1EDE4;
+            --ink: #F1EDE4;
+            --tan: #2A2A2A;
+            --sand: #3A3A3A;
+            --line: rgba(241, 237, 228, 0.2); /* Increased from 0.1 */
+        }
+
+        body.dark-mode .back-btn {
+            border-color: rgba(241, 237, 228, 0.3);
+            background-color: rgba(241, 237, 228, 0.05);
+        }
+
+        body.dark-mode .logo {
+            color: #FFFFFF !important;
+        }
+
+        /* Invert black logos in dark mode */
+        body.dark-mode img[src*="logga"],
+        body.dark-mode img[src*="logom"] {
+            filter: invert(1) brightness(2);
+        }
+
+        /* 
+           ========================================
+           RESET & BASE STYLES
+           ========================================
+        */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            cursor: none;
+        }
+
+        body {
+            background-color: var(--bg-cream);
+            color: var(--espresso);
+            font-family: var(--f-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            transition: var(--theme-transition);
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--espresso);
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-outline {
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--espresso);
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .cursor-outline.hover {
+            transform: translate(-50%, -50%) scale(1.8);
+            background-color: rgba(175, 138, 84, 0.1);
+            border-color: var(--caramel);
+        }
+
+        /* Hide cursor on interactive elements to ensure custom cursor is visible */
+        a, button, [onclick], .project-card, input, textarea {
+            cursor: none !important;
+        }
+
+        /* Background Elements */
+       
+
+       
+
+        h1, h2, h4 {
+            font-family: var(--f-serif);
+            font-weight: 400;
+            line-height: 1.1;
+        }
+         h3 {
+            font-family: var(--f-serif);
+            font-weight: 400;
+            line-height: 1;
+            padding-top: 2rem;
+            padding-bottom: 0.4rem;
+            font-size: 1.5rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: opacity 0.3s ease;
+        }
+
+        img, video {
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* 
+           ========================================
+           NAVIGATION
+           ========================================
+        */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem var(--gutter);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+            color: white; /* Inverted background effect */
+            transition: padding 0.4s ease, background-color 0.4s ease, backdrop-filter 0.4s ease;
+        }
+
+        nav.scrolled {
+            mix-blend-mode: normal;
+            background-color: rgba(241, 237, 228, 0.8); /* var(--bg-cream) with opacity */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 1rem var(--gutter);
+            color: var(--espresso);
+            border-bottom: 1px solid var(--line);
+        }
+
+        body.dark-mode nav.scrolled {
+            background-color: rgba(18, 18, 18, 0.8);
+            color: var(--espresso);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-weight: 800;
+            transition: transform 0.2s ease, color 0.2s ease;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo:active {
+            transform: scale(0.95);
+            color: var(--caramel);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            align-items: center;
+            line-height: 1;
+        }
+
+        .nav-links a {
+            transition: opacity 0.3s ease, transform 0.2s ease, color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.6;
+             transform: scale(1.1);
+        }
+
+        .nav-links a:active {
+            transform: scale(0.95);
+            color: var(--caramel);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 18px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 1.5px;
+            background-color: var(--espresso);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled .hamburger span {
+            background-color: var(--espresso);
+        }
+
+        /* Nav is difference mode by default, so span should be whiteish if not scrolled */
+        nav:not(.scrolled) .hamburger span {
+            background-color: white;
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--ink);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.6s, transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateY(-100%);
+        }
+
+        .mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .close-menu {
+            position: absolute;
+            top: 2rem;
+            right: var(--gutter);
+            background: none;
+            border: none;
+            color: var(--bg-cream);
+            font-size: 3.5rem;
+            cursor: pointer;
+            line-height: 1;
+            font-weight: 200;
+            font-family: var(--f-sans);
+        }
+
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            text-align: center;
+        }
+
+        .mobile-nav-links a {
+            font-family: var(--f-serif);
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            color: var(--bg-cream);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .mobile-nav-links a:hover {
+            opacity: 0.6;
+            transform: scale(1.05);
+        }
+
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .mobile-overlay {
+                transition: opacity 0.3s ease, visibility 0.3s !important;
+                transform: none !important;
+            }
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            opacity: 0.6;
+            transform: scale(1.1);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.9);
+            color: var(--caramel);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .theme-toggle-mobile {
+            margin-top: 2rem;
+            color: var(--bg-cream);
+            padding: 1rem;
+        }
+
+        .theme-toggle-mobile svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .sun-icon { display: none; }
+        .moon-icon { display: block; }
+
+        body.dark-mode .sun-icon { display: block; }
+        body.dark-mode .moon-icon { display: none; }
+
+        /* 
+           ========================================
+           PAGE TRANSITIONS
+           ========================================
+        */
+        .page {
+            display: none;
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* 
+           ========================================
+           LANDING PAGE (HOME)
+           ========================================
+        */
+        
+        /* Hero Section */
+        .hero {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 var(--gutter);
+            background-color: var(--bg-beige);
+            transition: var(--theme-transition);
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 8rem);
+            margin-bottom: 1rem;
+            will-change: transform, opacity;
+        }
+
+        .hero p {
+            font-family: var(--f-serif);
+            font-style: italic;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            opacity: 0.8;
+            will-change: transform, opacity;
+            max-width: 80ch;
+            margin: 0 auto;
+        }
+
+        /* About Section */
+        .about {
+            padding: var(--section-padding) var(--gutter);
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .about-text h2 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--espresso);
+            opacity: 0.9;
+            max-width: 80ch;
+        }
+
+        .about-image {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 0.6rem;
+            aspect-ratio: 4/5;
+            width: 100%;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        .about-image img:first-child {
+            grid-row: span 2;
+        }
+
+        /* Skills & Tools Section */
+        .skills-tools {
+            margin-top: 4rem;
+            padding-top: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .skills-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+        }
+
+        .category-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--espresso);
+            opacity: 0.5;
+            font-weight: 600;
+            min-width: 80px;
+            flex-shrink: 0;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .tag {
+            font-size: 0.82rem;
+            padding: 0.45rem 1.1rem;
+            border: 1px solid var(--line);
+            border-radius: 100px;
+            color: var(--espresso);
+            background: rgba(255, 255, 255, 0.15); /* Frosted glass effect */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            user-select: none;
+            font-family: var(--f-sans);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            letter-spacing: 0.02em;
+            opacity: 0.95;
+        }
+
+
+        body.dark-mode .tag {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        @media (max-width: 600px) {
+            .skills-row {
+                flex-direction: row;
+                gap: 0.8rem;
+            }
+            .category-label {
+                min-width: auto;
+            }
+        }
+
+
+        /* Project Section & Background */
+        .projects-section {
+            position: relative;
+            background-color: var(--bg-beige);
+            overflow: hidden;
+            transition: var(--theme-transition);
+        }
+
+        .projects-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: 60px 60px;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .projects-section::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            opacity: 0.05;
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .projects-title {
+            position: relative;
+            z-index: 1;
+            padding: 8rem var(--gutter) 0;
+            padding-bottom: 2rem;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            text-align: center;
+            font-family: var(--f-serif);
+            font-weight: 400;
+        }
+
+        /* Project Grid */
+        .projects-grid {
+            position: relative;
+            z-index: 1;
+            padding: 4rem var(--gutter) var(--section-padding);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 4rem;
+        }
+
+        .project-card {
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1), background-color 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .project-card:active {
+            transform: translateY(-5px) scale(0.98);
+        }
+
+        .project-card .image-wrapper {
+            aspect-ratio: 16/10;
+            background-color: var(--bg-beige);
+            margin-bottom: 1.5rem;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0);
+            transition: box-shadow 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        .project-card:hover .image-wrapper {
+            
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: grayscale(100%);
+            transition: transform 0.8s cubic-bezier(0.215, 0.61, 0.355, 1), filter 0.8s ease;
+        }
+
+        .project-card:hover img {
+            transform: scale(1.08);
+            filter: grayscale(0%);
+        }
+
+        .project-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .project-card:hover h3 {
+            color: var(--caramel);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .project-card p {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.6;
+        }
+
+        /* 
+           ========================================
+           PROJECT DETAIL PAGES
+           ========================================
+        */
+        .project-detail {
+            padding-top: 100px;
+        }
+
+        .breadcrumbs {
+            margin-bottom: 2rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.6;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .breadcrumbs a {
+            color: var(--ink);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+            position: relative;
+        }
+
+        .breadcrumbs a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--ink);
+            transition: width 0.3s ease;
+        }
+
+        .breadcrumbs a:hover {
+            opacity: 1;
+        }
+
+        .breadcrumbs a:hover::after {
+            width: 100%;
+        }
+
+        .breadcrumbs span {
+            opacity: 0.4;
+        }
+
+        .project-hero {
+            width: 100%;
+            height: 60vh;
+            overflow: hidden;
+            margin-bottom: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-hero.text-hero {
+            background-color: var(--bg-cream);
+            color: var(--ink);
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .project-hero.text-hero h1 {
+            font-size: 6vw;
+            max-width: 90%;
+            margin: 0;
+            line-height: 0.9;
+            font-family: var(--f-serif);
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        .project-hero img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .project-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 var(--gutter) 100px;
+        }
+
+        .project-header {
+            margin-bottom: 4rem;
+            text-align: left;
+        }
+
+        .project-header h1 {
+            font-size: 4rem;
+            margin-bottom: 1.6rem;
+            margin-top: 1.6rem;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 1.5rem;
+            transition: var(--theme-transition);
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .project-meta span {
+            display: block;
+            opacity: 0.5;
+            margin-bottom: 0.3rem;
+        }
+
+        .project-description {
+            font-size: 2rem;
+            font-weight: 500;
+            line-height: 1.3;
+            font-family: var(--f-serif);
+            padding-bottom: 0.6rem;
+            max-width: 70ch;
+        }
+             p {
+                font-family: var(--f-sans);
+                font-size: 1rem;
+                padding-top: 0.6rem;
+                /* opacity: 0.8; */
+                max-width: 70ch;
+            }
+
+        .project-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 8rem;
+            margin: 6rem 0;
+        }
+
+        .gallery-item {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .gallery-caption {
+            font-size: 0.85rem;
+            margin-top: 1.5rem;
+            opacity: 0.6;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: var(--f-sans);
+            text-align: center;
+            max-width: 80ch;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .back-btn {
+            display: inline-block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: visible; /* Changed from hidden to show drawing border */
+            z-index: 1;
+            border: 1px solid var(--line);
+            background-color: rgba(61, 43, 31, 0.03);
+            font-weight: 500;
+        }
+
+        /* Border Tracing Animation */
+        .back-btn::before,
+        .back-btn::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 1px solid transparent;
+            box-sizing: border-box;
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        .back-btn::before {
+            top: -1px;
+            left: -1px;
+        }
+
+        .back-btn::after {
+            bottom: -1px;
+            right: -1px;
+        }
+
+        .back-btn:hover::before {
+            width: calc(100% + 2px);
+            height: calc(100% + 2px);
+            border-top-color: var(--caramel);
+            border-right-color: var(--caramel);
+            transition: width 0.2s ease, height 0.2s ease 0.2s;
+        }
+
+        .back-btn:hover::after {
+            width: calc(100% + 2px);
+            height: calc(100% + 2px);
+            border-bottom-color: var(--caramel);
+            border-left-color: var(--caramel);
+            transition: width 0.2s ease 0.4s, height 0.2s ease 0.6s;
+        }
+
+        .back-btn:hover {
+            color: var(--caramel);
+            border-color: transparent;
+            background-color: rgba(175, 138, 84, 0.08);
+            transition: color 0.3s ease, border-color 0s ease 0.8s, background-color 0.3s ease;
+        }
+
+        .back-btn:active {
+            transform: scale(0.95) translateY(2px);
+            background-color: rgba(175, 138, 84, 0.1);
+        }
+
+        .project-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6rem;
+            padding-top: 4rem;
+            border-top: 1px solid var(--line);
+            transition: var(--theme-transition);
+        }
+
+        .next-project-link {
+            font-family: var(--f-serif);
+            font-size: 1.5rem;
+            font-style: italic;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .next-project-link span {
+            font-family: var(--f-sans);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-style: normal;
+            opacity: 0.5;
+            margin-bottom: 0.5rem;
+        }
+
+        .next-project-link:hover {
+            color: var(--caramel);
+            transform: translateX(10px);
+        }
+
+        @media print {
+            .project-navigation {
+                display: none !important;
+            }
+        }
+
+        /* 
+           ========================================
+           FOOTER
+           ========================================
+        */
+        footer {
+            padding: 100px var(--gutter);
+            background-color: var(--ink);
+            color: var(--bg-cream);
+            text-align: center;
+            transition: var(--theme-transition);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        footer h2 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 4rem;
+            align-items: center;
+        }
+
+        .footer-links a {
+            transition: transform 0.2s ease, color 0.2s ease;
+            color: var(--bg-cream);
+            text-decoration: none;
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--caramel);
+            transform: translateY(-2px);
+        }
+
+        .footer-links a:active {
+            transform: scale(0.95);
+            color: var(--caramel);
+        }
+
+        .footer-bottom {
+            font-size: 0.8rem;
+            opacity: 0.5;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            max-width: 80ch;
+            margin: 0 auto;
+        }
+
+        /* 
+           ========================================
+           RESPONSIVE
+           ========================================
+        */
+        @media (max-width: 768px) {
+            :root {
+                --section-padding: 80px;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image {
+                aspect-ratio: 4/5;
+                height: auto;
+                margin-top: 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card img {
+                filter: grayscale(0%);
+            }
+
+            .project-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .project-meta {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .nav-links {
+                display: none; /* Simplified for mobile */
+            }
+
+            .nav-right {
+                gap: 1.2rem;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+        }
+
+        
+
+        /* 
+           ========================================
+           404 PAGE
+           ========================================
+        */
+        .not-found {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 var(--gutter);
+            height: 100vh;
+        }
+
+        .not-found.active {
+            display: flex;
+        }
+
+        .not-found-content {
+            max-width: 600px;
+        }
+
+        .not-found-title {
+            font-size: clamp(8rem, 20vw, 15rem);
+            line-height: 0.8;
+            margin-bottom: 2rem;
+            opacity: 0.1;
+            font-family: var(--f-serif);
+            user-select: none;
+        }
+
+        .not-found-text {
+            font-family: var(--f-serif);
+            font-style: italic;
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            color: var(--espresso);
+            max-width: 80ch;
+            margin: 0 auto 3rem;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--bg-cream);
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            color: var(--espresso);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:not(.visible) {
+            transform: translateY(20px);
+        }
+
+        .back-to-top:hover {
+            border-color: var(--caramel);
+            color: var(--caramel);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .back-to-top svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .back-to-top:hover svg {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* 
+           ========================================
+           PRINT STYLESHEET
+           ========================================
+        */
+        @media print {
+            @page {
+                margin: 2cm;
+            }
+
+            /* Reset background and text color for ink efficiency */
+            * {
+                background: transparent !important;
+                color: #1a1a1a !important;
+                box-shadow: none !important;
+                text-shadow: none !important;
+                transition: none !important;
+                animation: none !important;
+            }
+
+            body {
+                background: white !important;
+                cursor: auto !important;
+                font-size: 12pt;
+            }
+
+            /* Remove non-print elements */
+            nav, 
+            .cursor-dot, 
+            .cursor-outline, 
+            .grain, 
+            .bg-aura, 
+            .back-to-top, 
+            #theme-toggle,
+            .back-btn,
+            #theme-toggle svg {
+                display: none !important;
+            }
+
+            /* Make all pages visible for a full portfolio print */
+            .page {
+                display: block !important;
+                opacity: 1 !important;
+                min-height: auto !important;
+                page-break-after: always;
+            }
+
+            /* Project detail pages should start on a new page */
+            .project-detail {
+                page-break-before: always;
+                padding-top: 0 !important;
+            }
+
+            /* Typography preservation */
+            h1, h2, h3, h4 {
+                page-break-after: avoid;
+                color: #000 !important;
+            }
+
+            /* Project images large and clean */
+            img {
+                max-width: 100% !important;
+                height: auto !important;
+                display: block !important;
+                margin: 1.5rem auto !important;
+                page-break-inside: avoid;
+                filter: none !important;
+            }
+
+            /* Visible URLs next to links */
+            a[href]:not([href^="#"]):not([href=""])::after {
+                content: " (" attr(href) ")";
+                font-size: 0.9em;
+                font-weight: normal;
+                opacity: 0.8;
+            }
+
+            /* Specific layout adjustments for print */
+            .hero {
+                height: auto !important;
+                padding: 4rem 0 !important;
+                background: none !important;
+            }
+
+            .hero h1 {
+                font-size: 3.5rem !important;
+                transform: none !important;
+                opacity: 1 !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            .hero p {
+                transform: none !important;
+                opacity: 1 !important;
+                font-size: 1.5rem !important;
+            }
+
+            .about {
+                display: block !important;
+                padding: 2rem 0 !important;
+            }
+
+            .about-image {
+                margin-top: 2rem;
+                max-width: 400px;
+                page-break-inside: avoid;
+            }
+
+            .projects-grid {
+                display: block !important;
+                padding: 0 !important;
+            }
+
+            .project-card {
+                margin-bottom: 3rem;
+                page-break-inside: avoid;
+                transform: none !important;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 2rem;
+            }
+
+            .project-card .image-wrapper {
+                aspect-ratio: auto !important;
+                margin-bottom: 1rem !important;
+            }
+
+            .project-card h3 {
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+            }
+
+            .project-hero {
+                height: auto !important;
+                max-height: 500px;
+                margin-bottom: 2rem !important;
+            }
+
+            .project-content {
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+
+            .project-header h1 {
+                font-size: 3rem !important;
+            }
+
+            .project-meta {
+                border-bottom: 1px solid #eee !important;
+                margin-bottom: 2rem !important;
+            }
+
+            .project-description {
+                font-size: 1.5rem !important;
+            }
+
+            footer {
+                background: white !important;
+                color: #1a1a1a !important;
+                padding: 3rem 0 !important;
+                border-top: 1px solid #eee;
+                page-break-before: avoid;
+            }
+
+            footer h2 {
+                font-size: 2rem !important;
+                color: #1a1a1a !important;
+            }
+
+            .footer-links {
+                margin-bottom: 1rem !important;
+            }
+
+            /* Ensure sections revealed by JS are visible */
+            section {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+
+            .skills-tools {
+                margin-top: 2rem !important;
+            }
+
+            .tag {
+                border: 1px solid #ccc !important;
+                background: none !important;
+                color: #333 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grain"></div>
+    <div class="bg-aura"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- 
+        ========================================
+        NAVIGATION
+        ========================================
+    -->
+    <nav>
+        <!-- /* ← EDIT HERE: Your Name/Logo */ -->
+        <a href="#" class="logo" onclick="showPage('home')">ANNA</a>
+        
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="#projects-grid" onclick="showPage('home', 'projects-grid')">My Work</a>
+                <a href="#about" onclick="showPage('home', 'about')">About</a> 
+                <a href="#contact" onclick="showPage('home', 'contact')">Contact</a>
+            </div>
+
+            <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="moon-icon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            </button>
+
+            <button class="hamburger" aria-label="Open Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="mobile-overlay">
+        <button class="close-menu" aria-label="Close Menu">&times;</button>
+        <div class="mobile-nav-links">
+            <a href="#projects-grid" onclick="showPage('home', 'projects-grid'); closeMobileMenu()">My Work</a>
+            <a href="#about" onclick="showPage('home', 'about'); closeMobileMenu()">About</a> 
+            <a href="#contact" onclick="showPage('home', 'contact'); closeMobileMenu()">Contact</a>
+            
+            <button class="theme-toggle theme-toggle-mobile" aria-label="Toggle Dark Mode">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="moon-icon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- 
+        ========================================
+        PAGE: HOME
+        ========================================
+    -->
+    <main id="home" class="page active">
+        
+        <!-- Hero Section -->
+        <section class="hero">
+            <!-- /* ← EDIT HERE: Hero Title */ -->
+            <h1>Designing with people in mind</h1>
+            <!-- /* ← EDIT HERE: Tagline */ -->
+            <p>I'm Anna, a UX/UI designer who focuses on why people use digital products the way they do, and how to make that experience better.</p>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="projects-section">
+            <h2 id="projects-grid" class="projects-title">Selected Work</h2>
+            <div class="projects-grid">
+                
+                <!-- Project 1 Card -->
+                <div class="project-card" onclick="showPage('project-1')">
+                    <div class="image-wrapper">
+                        <!-- /* ← EDIT HERE: Project 1 Thumbnail (e.g., /public/images/project1-thumb.jpg) */ -->
+                        <img src="public/images/Graphite.png" alt="Mineral Kingdom" referrerPolicy="no-referrer" fetchpriority="high" decoding="async">
+                    </div>
+                    <!-- /* ← EDIT HERE: Project 1 Title */ -->
+                    <h3>Mineral Kingdom</h3>
+                    <!-- /* ← EDIT HERE: Project 1 Category */ -->
+                    <p> 2025 • UX/UI Design • Fictional</p>
+                </div>
+
+                <!-- Project 2 Card -->
+                <div class="project-card" onclick="showPage('project-2')">
+                    <div class="image-wrapper">
+                        <!-- /* ← EDIT HERE: Project 2 Thumbnail (e.g., /public/images/project2-thumb.jpg) */ -->
+                        <img src="public/images/Space-Gray.png" alt="Glam & Groove" referrerPolicy="no-referrer" fetchpriority="high" decoding="async"> 
+                    </div>
+                    <!-- /* ← EDIT HERE: Project 2 Title */ -->
+                    <h3>Glam & Groove</h3>
+                    <!-- /* ← EDIT HERE: Project 2 Category */ -->
+                    <p> 2025 • UX/UI Design  </p>
+                </div>
+
+                <!-- Project 3 Card -->
+                <div class="project-card" onclick="showPage('project-3')">
+                    <div class="image-wrapper">
+                        <!-- /* ← EDIT HERE: Project 3 Thumbnail (e.g., /public/images/project3-thumb.jpg) */ -->
+                        <img src="public/images/logga_rund_thicker.png" alt="Logotypes" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                    </div>
+                    <!-- /* ← EDIT HERE: Project 3 Title */ -->
+                    <h3>Logofolio</h3>
+                    <!-- /* ← EDIT HERE: Project 3 Category */ -->
+                    <p> 2025 • Illustrator</p>
+                </div>
+
+                <!-- Project 4 Card -->
+                <div class="project-card" onclick="showPage('project-4')">
+                    <div class="image-wrapper">
+                        <!-- /* ← EDIT HERE: Project 4 Thumbnail */ -->
+                        <img src="public/images/postermockup.png" alt="mockup poster" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                    </div>
+                    <!-- /* ← EDIT HERE: Project 4 Title */ -->
+                    <h3>A little bit of this and that</h3>
+                    <!-- /* ← EDIT HERE: Project 4 Category */ -->
+                    <p> 2025 •  </p>
+                </div>
+
+                <!-- Project 5 Card -->
+                <div class="project-card" onclick="showPage('project-5')">
+                    <div class="image-wrapper">
+                        <!-- /* ← EDIT HERE: Project 5 Thumbnail */ -->
+                        <img src="public/images/comparing screen.png" alt="mockup optmizing website" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                    </div>
+                    <!-- /* ← EDIT HERE: Project 5 Title */ -->
+                    <h3>Optimize website</h3>
+                    <!-- /* ← EDIT HERE: Project 5 Category */ -->
+                    <p> 2025 • Optimizing </p> 
+                </div>
+
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="about-text">
+                <!-- /* ← EDIT HERE: About Title */ -->
+                <h2>Behind the screen.</h2>
+                <!-- /* ← EDIT HERE: About Text */ -->
+                <p> Hi, I'm Anna, a UX/UI designer with a background that might surprise you. Before diving into design, I studied social work, which taught me a lot about how people think, what they need, and why they behave the way they do. Turns out, that translates pretty well to screens.</p>
+               <p> For the past two years I've been studying digital design at Broby Grafiska, where I've been shaping that understanding into a design practice. Along the way I've also picked up the basics of HTML and CSS, enough to know how things are built and to work closely with developers. I'm drawn to the psychology behind how people navigate and experience digital spaces, what makes something feel easy and natural, and what makes it feel confusing. I use AI as a creative and technical collaborator, helping me build, iterate, and problem solve faster so I can focus on the design thinking behind it.</p>
+               <p> This portfolio is a collection of work from my time in school, a reflection of where I am now and where I'm headed.</p>
+
+                <div class="skills-tools">
+                    <div class="skills-row">
+                        <span class="category-label">Skills</span>
+                        <div class="tag-container">
+                            <span class="tag">UX Research</span>
+                            <span class="tag">Wireframing</span>
+                            <span class="tag">Prototyping</span>
+                            <span class="tag">User Testing</span>
+                        </div>
+                    </div>
+                    <div class="skills-row">
+                        <span class="category-label">Tools</span>
+                        <div class="tag-container">
+                            <span class="tag">Figma</span>
+                            <span class="tag">Adobe Illustrator</span>
+                            <span class="tag">Photoshop</span>
+                            <span class="tag">After effects</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="about-image">
+                <!-- /* ← EDIT HERE: Profile Image URLs */ -->
+                <img src="https://picsum.photos/seed/designer1/800/1000" alt="Anna Trangard portrait 1" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                <img src="https://picsum.photos/seed/designer2/800/1000" alt="Anna Trangard portrait 2" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                <img src="https://picsum.photos/seed/designer3/800/1000" alt="Anna Trangard portrait 3" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer id="contact">
+            <!-- /* ← EDIT HERE: Footer Title */ -->
+            <h2>Thanks for stopping by!</h2>
+            <div class="footer-links">
+               <h3>Feel free to reach out on LinkedIn</h3>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Anna Trangard. All rights reserved.
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- 
+        ========================================
+        PAGE: PROJECT 1 (Mineralkingdom)
+        ========================================
+    -->
+    <div id="project-1" class="page project-detail">
+        <div class="project-hero">
+            <!-- /* ← EDIT HERE: Project 1 Hero Image */ -->
+            <img src="public/images/Graphite.png" alt="Mineralkingdom Hero" referrerPolicy="no-referrer" decoding="async">
+        </div>
+
+        <div class="project-content">
+            <div class="breadcrumbs">
+                <a href="#" onclick="showPage('home')">Home</a>
+                <span>/</span>
+                <a href="#projects-grid" onclick="showPage('home', 'projects-grid')">Projects</a>
+                <span>/</span>
+                Mineral Kingdom
+            </div>
+            <div class="project-header">
+                <!-- /* ← EDIT HERE: Project 1 Title */ -->
+                <h1>Mineral Kingdom</h1>
+                <div class="project-meta">
+                    <div><span>Year</span>2025</div>
+                    <div><span>Type</span>Brand Identity (Fictive) </div>
+                    <div><span>Role</span>UX/UI Designer</div>
+                     <div><span>Tools</span>Figma, Illustrator</div>
+                    
+                </div>
+                <!-- /* ← EDIT HERE: Project 1 Description */ -->
+                <div class="project-description" style="line-height: 39.6px; margin-bottom: 15.4px;">
+                    A branding and UX project exploring how Filipstad can make the Mineral Kingdom a more attractive destination for geotourism and nature tourism.
+                </div>
+                    <p style="padding-top: 10.6px;">Filipstad has something rare, a landscape shaped by millions of years of geology, rich history, and untouched nature. The Mineral Kingdom sits at the heart of it, but its potential as a destination hasn't fully been realized yet.</p>
+                    <h3> The challenge</h3>
+                    <p>The challenge was to explore how the Mineral Kingdom could become more than a site to visit, more like a vast, wall-less museum where geology, history, and nature come together into one coherent experience.</p>
+                    <p>This meant looking at the brand, the visual identity, and the digital presence, and asking: how do we make this place feel as interesting as it actually is?</p>
+                   <h3> The solution</h3>
+                    <p>To make the Mineral Kingdom feel alive and worth visiting, we focused on two things: getting people there, and giving them something to do once they arrived.
+                    For the physical experience, we designed a mobile game where visitors scan QR codes placed throughout the park to hunt for hidden minerals. It turns a walk in nature into something interactive and memorable, accessible for families and curious first-timers, without feeling childish for those who take geology seriously.
+                    For the website, we built a structure that works for two very different audiences. Casual visitors can quickly get a feel for the place and find a reason to go. And for the geology enthusiasts, the information and depth is there, just not in the way.
+                    Together, the two parts push toward the same goal: making the Mineral Kingdom a place that's easy to discover, and hard to forget.</p>
+            </div>
+
+            <div class="project-gallery">
+                <!-- /* ← EDIT HERE: Project 1 Gallery Images */ -->
+                <div class="gallery-item">
+                    <img src="public/images/mineralriket1-1.jpg" alt="Mineral kingdom about" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+                 <div class="gallery-item">
+                    <img src="public/images/Frame 1171276024.png" alt="Mineral kingdom tilas stoll" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item">
+                    <img src="public/images/Natural-Titanium.png" alt="Mineral kingdom mobile mockup" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item">
+                    <img src="public/images/Frame 1171275882.png" alt="Mineral kingdom game mockup" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+                  <div class="gallery-item">
+                    <img src="public/images/smallogo@0,5x.png" alt="Mineral kingdom logotyp" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+            
+            </div>
+
+            <div class="project-navigation">
+                <a href="#projects-grid" class="back-btn" onclick="showPage('home', 'projects-grid')">Back to Projects</a>
+                <a href="#" class="next-project-link" onclick="showPage('project-2')">
+                    <span>Next Project</span>
+                    Glam & Groove →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 
+        ========================================
+        PAGE: PROJECT 2 (Glam & Groove)
+        ========================================
+    -->
+    <div id="project-2" class="page project-detail">
+        <div class="project-hero">
+            <!-- /* ← EDIT HERE: Project 2 Hero Image */ -->
+            <img src="public/images/Hand and iPhone 16 Pro.png" alt="Glam & Groove Hero" referrerPolicy="no-referrer" decoding="async"> 
+        </div>
+
+        <div class="project-content">
+            <div class="breadcrumbs">
+                <a href="#" onclick="showPage('home')">Home</a>
+                <span>/</span>
+                <a href="#projects-grid" onclick="showPage('home', 'projects-grid')">Projects</a>
+                <span>/</span>
+                Glam & Groove
+            </div>
+            <div class="project-header">
+                <!-- /* ← EDIT HERE: Project 2 Title */ -->
+                <h1>Glam & Groove</h1>
+                <div class="project-meta" style="margin-bottom: 38px;">
+                    <div><span>Year</span>2025</div>
+                    <div><span>Type</span>Brand Identity</div>
+                    <div><span>Role</span>UX/UI Designer</div>
+                     <div><span>Tools</span>Figma, Illustrator, Premiere Pro</div>
+                </div>
+                <!-- /* ← EDIT HERE: Project 2 Description */ -->
+                <div class="project-description">
+                    Where dance meets community.
+                </div>
+                <p style="padding-top: 10.6px;"> Glam and Groove is a Karlstad-based dance organization bringing people together through urban dance styles, creating an inclusive and accessible space where young people can grow, express themselves, and find community.</p>
+                <h3>The Challenge</h3>
+                <p>Glam and Groove has spent a decade building a passionate, community-driven dance movement in Karlstad, but their external communication and visual identity don't yet reflect the energy, warmth, and impact they bring. How might we help Glam and Groove show up in the world the way they show up for their community, ensuring their message reaches and resonates with more young people across the Värmland region?</p>
+                <h3>The Solution</h3>
+                <p>To ensure Glam and Groove shows up in the world the way they show up for their community, we will craft a complete visual identity, including a new logo, colors, typography, imagery, and tone of voice, paired with a campaign film and a fully responsive website. Together, these deliverables will give their message the consistency, strength, and visibility it deserves, helping them connect with more young people and making it instantly clear to anyone who encounters them what Glam and Groove truly stands for.</p>
+            </div>
+
+            <div class="project-gallery">
+                <!-- /* ← EDIT HERE: Project 2 Gallery Images */ -->
+                <div class="gallery-item">
+                    <img src="public/images/gg3.png" alt="glam and groove mockup " referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+                 <div class="gallery-item">
+                    <img src="public/images/Desktop-wires.png" alt="Glam & Groove mockup 3" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+                 <div class="gallery-item">
+                    <img src="public/images/glamgroove mobile4-1.png" alt="Glam & Groove mockup 1" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item">
+                    <img src="public/images/de618761-5246-492d-9103-18d401280bf1 2.png" alt="Glam & Groove mockup 2" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item">
+                    <img src="public/images/glamsign.png" alt="glam and groove sign" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+            </div>
+            <div class="project-navigation">
+                <a href="#projects-grid" class="back-btn" onclick="showPage('home', 'projects-grid')">Back to Projects</a>
+                <a href="#" class="next-project-link" onclick="showPage('project-3')">
+                    <span>Next Project</span>
+                    Logofolio →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 
+        ========================================
+        PAGE: PROJECT 3 (Logofolio)
+        ========================================
+    -->
+    <div id="project-3" class="page project-detail">
+        <div class="project-hero">
+            <!-- /* ← EDIT HERE: Project 3 Hero Image */ -->
+            <img src="public/images/logga_rund_thicker.png" alt="Logotyp" referrerPolicy="no-referrer" decoding="async">
+        </div>
+
+        <div class="project-content">
+            <div class="breadcrumbs">
+                <a href="#" onclick="showPage('home')">Home</a>
+                <span>/</span>
+                <a href="#projects-grid" onclick="showPage('home', 'projects-grid')">Projects</a>
+                <span>/</span>
+                Logofolio
+            </div>
+            <div class="project-header">
+                <!-- /* ← EDIT HERE: Project 3 Title */ -->
+                <h1>Logofolio</h1>
+                <div class="project-meta">
+
+                    <div><span>Year</span>2025- 2026</div>
+                    <div><span>Type</span>Logotyp</div>
+                    <div><span>Role</span>UX/UI Designer</div>
+                    <div><span>Tools</span>Illustrator</div>
+
+                </div>
+                <!-- /* ← EDIT HERE: Project 3 Description */ -->
+                <div class="project-description">
+                    A collection of logotypes for both fictional and real projects.
+                </div>
+               <!-- <p> Sätt in beskrivande text här</p> -->
+                
+            </div>
+
+            <div class="project-gallery">
+                <!-- /* ← EDIT HERE: Project 3 Gallery Images */ -->
+                <div class="gallery-item">
+                    <img src="public/images/logga_text.png" alt="Hantverksbutiken logo" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+            </div>
+
+            <div class="project-navigation">
+                <a href="#projects-grid" class="back-btn" onclick="showPage('home', 'projects-grid')">Back to Projects</a>
+                <a href="#" class="next-project-link" onclick="showPage('project-4')">
+                    <span>Next Project</span>
+                    A little of this and that →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 
+        ========================================
+        PAGE: PROJECT 4 (A little bit of this and that)
+        ========================================
+    -->
+    <div id="project-4" class="page project-detail">
+        <div class="project-hero text-hero">
+            <!-- /* ← EDIT HERE: Project 4 Text Hero */ -->
+            <h1>A little bit of this and that</h1>
+        </div>
+
+        <div class="project-content">
+            <div class="breadcrumbs">
+                <a href="#" onclick="showPage('home')">Home</a>
+                <span>/</span>
+                <a href="#projects-grid" onclick="showPage('home', 'projects-grid')">Projects</a>
+                <span>/</span>
+                A little bit of this and that
+            </div>
+            <div class="project-header">
+                <!-- /* ← EDIT HERE: Project 4 Description */ -->
+                <div class="project-description">
+                   Not every project is a big case study, here are a few smaller ones.
+                </div>
+                <p>A mix of briefs, explorations, and quick projects from two years of design school. Each one taught me something, whether it was a new technique, a tool, or just a better way of seeing design.</p>
+              
+            </div>
+
+            <div class="project-gallery">
+                <!-- /* ← EDIT HERE: Project 4 Gallery Images */ -->
+                <div class="gallery-item">
+                    <img src="public/images/poster-1.jpg" alt="Oh the places you'll go" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                    <p class="gallery-caption">Poster design - A poster interpretation of one of Dr. Seuss's most beloved quotes</p>
+                </div>
+            </div>
+
+            <div class="project-navigation">
+                <a href="#projects-grid" class="back-btn" onclick="showPage('home', 'projects-grid')">Back to Projects</a>
+                <a href="#" class="next-project-link" onclick="showPage('project-5')">
+                    <span>Next Project</span>
+                    Optimize the Menu Finder →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 
+        ========================================
+        PAGE: PROJECT 5 (Optimization)
+        ========================================
+    -->
+    <div id="project-5" class="page project-detail">
+        <div class="project-hero">
+            <!-- /* ← EDIT HERE: Project 5 Hero Image */ -->
+            <img src="public/images/comparing screen.png" alt="Optimizing website" referrerPolicy="no-referrer" decoding="async">
+        </div>
+
+        <div class="project-content">
+            <div class="breadcrumbs">
+                <a href="#" onclick="showPage('home')">Home</a>
+                <span>/</span>
+                <a href="#projects-grid" onclick="showPage('home', 'projects-grid')">Projects</a>
+                <span>/</span>
+                Optimize the Menu Finder
+            </div>
+            <div class="project-header">
+                <!-- /* ← EDIT HERE: Project 5 Title */ -->
+                <h1>Optimize the Menu Finder</h1>
+                <div class="project-meta">
+                    <div><span>Year</span>2025</div>
+                    <div><span>Type</span>Optimizing website</div>
+                    <div><span>Role</span>UX/UI Designer</div>
+                    <div><span>Tools</span> Figma, Google Lighthouse, Hotjar</div>
+                </div>
+                <!-- /* ← EDIT HERE: Project 5 Description */ -->
+                <div class="project-description">
+                  The Menu Finder is a website where you can discover restaurants near you, browse their menus, find what you're in the mood for, and decide where to eat.
+                </div>
+                <h3>The Challenge</h3>
+                <p>The main goal was to make the Menu Finder the go-to place when people are looking for a restaurant. To get there, the focus was on creating an experience smooth enough to keep users on the page, and good enough to make them want to come back.</p>
+                 <h3>The Solution</h3>
+                 <p>I started by mapping out where things went wrong and worked through it step by step. Load times were cut down so users wouldn't drop off before getting started, and all broken links were fixed so people could actually move through the app without getting stuck.
+                 The navigation was rebuilt to make finding a menu simple and straightforward. And instead of hiding the calls to action, I made them clear and easy to spot, placed right where users needed them.
+                The result is an experience that's easier to use, easier to stay on, and worth coming back to.</p>
+            </div>
+
+            <div class="project-gallery">
+                <!-- /* ← EDIT HERE: Project 5 Gallery Images */ -->
+                <div class="gallery-item">
+                    <img src="public/images/opt1-1.png" alt="Optimizing website mockup" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item">
+                    <img src="public/images/opt2-1.png" alt="Optimizing website mockup 2" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item">
+                    <img src="public/images/opt3-2.png" alt="Optimizing website mockup 3" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+                 <div class="gallery-item">
+                    <img src="public/images/opt4.png" alt="Optimizing website mockup 4" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+                 <div class="gallery-item">
+                    <img src="public/images/mock5.png" alt="Optimizing website mockup 5" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item">
+                    <img src="public/images/mock6.png" alt="Optimizing website mockup 6" referrerPolicy="no-referrer" loading="lazy" decoding="async">
+                </div>
+            </div>
+
+            <div class="project-navigation">
+                <a href="#projects-grid" class="back-btn" onclick="showPage('home', 'projects-grid')">Back to Projects</a>
+                <a href="#" class="next-project-link" onclick="showPage('project-1')">
+                    <span>Next Project</span>
+                    Mineral Kingdom →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 
+        ========================================
+        PAGE: 404 (NOT FOUND)
+        ========================================
+    -->
+    <div id="404" class="page not-found">
+        <div class="not-found-content">
+            <h1 class="not-found-title">404</h1>
+            <p class="not-found-text">The page you are looking for has drifted away into the ether.</p>
+            <a href="#" class="back-btn" style="margin-top: 2rem;" onclick="showPage('home')">Return to the Studio</a>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top" aria-label="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+    </button>
+
+    <!-- 
+        ========================================
+        JAVASCRIPT: ROUTER & INTERACTION
+        ========================================
+    -->
+    <script>
+        /**
+         * Simple Page Router
+         * Switches visibility between sections based on ID
+         */
+        let pageTimeouts = [];
+
+        function showPage(pageId, sectionId) {
+            // Prevent default link behavior if needed
+            event?.preventDefault();
+
+            // Clear any pending page hide timeouts
+            pageTimeouts.forEach(t => clearTimeout(t));
+            pageTimeouts = [];
+
+            const pages = document.querySelectorAll('.page');
+            
+            // Hide all pages
+            pages.forEach(page => {
+                page.classList.remove('active');
+                // Small delay to allow display:none to take effect after opacity
+                const t = setTimeout(() => {
+                    if (!page.classList.contains('active')) {
+                        page.style.display = 'none';
+                    }
+                }, 500);
+                pageTimeouts.push(t);
+            });
+
+            // Show target page
+            let targetPage = document.getElementById(pageId);
+            
+            // Fallback to 404 if page doesn't exist
+            if (!targetPage) {
+                targetPage = document.getElementById('404');
+            }
+
+            if (targetPage) {
+                // Use flex for 404 page, block for others
+                targetPage.style.display = targetPage.classList.contains('not-found') ? 'flex' : 'block';
+                
+                // Trigger reflow for transition
+                targetPage.offsetHeight; 
+                targetPage.classList.add('active');
+                
+                // Scroll to section or top
+                if (sectionId) {
+                    const section = document.getElementById(sectionId);
+                    if (section) {
+                        // Small delay to ensure display:block is applied
+                        setTimeout(() => {
+                            section.scrollIntoView({ behavior: 'smooth' });
+                        }, 50);
+                    }
+                } else {
+                    window.scrollTo(0, 0);
+                }
+            }
+        }
+
+        // Handle browser back button (optional enhancement)
+        window.onpopstate = function(event) {
+            if (event.state && event.state.pageId) {
+                showPage(event.state.pageId);
+            } else {
+                showPage('home');
+            }
+        };
+
+        // Smooth reveal on scroll (simple implementation)
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            if (section.classList.contains('hero')) {
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+                return;
+            }
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'all 1s ease-out';
+            observer.observe(section);
+        });
+
+        // Hero Scroll Animation
+        const hero = document.querySelector('.hero');
+        const heroContent = hero?.querySelectorAll('h1, p');
+        const nav = document.querySelector('nav');
+        
+        window.addEventListener('scroll', () => {
+            // Toggle nav scrolled state
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+
+            // Only animate if home page is active
+            if (document.getElementById('home').classList.contains('active')) {
+                const scrollY = window.scrollY;
+                const opacity = Math.max(0, 1 - scrollY / 600);
+                const scale = 1 + scrollY / 1500;
+                
+                heroContent?.forEach(el => {
+                    el.style.opacity = opacity;
+                    el.style.transform = `scale(${scale})`;
+                });
+            }
+        });
+
+        // Theme Toggle Logic
+        const themeToggles = document.querySelectorAll('.theme-toggle');
+        const body = document.body;
+
+        themeToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                const isDark = body.classList.contains('dark-mode');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+        });
+
+        // Back to Top Logic
+        const backToTop = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Mobile Menu Logic
+        const hamburger = document.querySelector('.hamburger');
+        const closeMenuBtn = document.querySelector('.close-menu');
+        const mobileOverlay = document.querySelector('.mobile-overlay');
+
+        function openMobileMenu() {
+            mobileOverlay.classList.add('active');
+            document.body.classList.add('menu-open');
+        }
+
+        function closeMobileMenu() {
+            mobileOverlay.classList.remove('active');
+            document.body.classList.remove('menu-open');
+        }
+
+        hamburger.addEventListener('click', openMobileMenu);
+        closeMenuBtn.addEventListener('click', closeMobileMenu);
+
+        // Instant Feel: Preload images on hover
+        document.querySelectorAll('.project-card, .next-project-link').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                const targetId = el.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+                if (targetId) {
+                    const targetPage = document.getElementById(targetId);
+                    if (targetPage) {
+                        targetPage.querySelectorAll('img[loading="lazy"]').forEach(img => {
+                            img.loading = 'eager'; // Trigger immediate load
+                        });
+                    }
+                }
+            });
+        });
+
+        // Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        let posX = 0, posY = 0;
+        let mouseX = 0, mouseY = 0;
+        let currentScale = 1;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Dot follows exactly
+            cursorDot.style.transform = `translate(-50%, -50%) translate(${mouseX}px, ${mouseY}px)`;
+        });
+
+        // Outline follows with a lag using requestAnimationFrame for maximum smoothness
+        function animateOutline() {
+            // Lerp (Linear Interpolation) for smooth lag
+            posX += (mouseX - posX) * 0.25;
+            posY += (mouseY - posY) * 0.25;
+
+            // Lerp scale for smooth expansion/contraction
+            const targetScale = cursorOutline.classList.contains('hover') ? 1.5 : 1;
+            currentScale += (targetScale - currentScale) * 0.15;
+
+            cursorOutline.style.transform = `translate(-50%, -50%) translate(${posX}px, ${posY}px) scale(${currentScale})`;
+            
+            requestAnimationFrame(animateOutline);
+        }
+
+        animateOutline();
+
+        // Hover states
+        const interactiveElements = 'a, button, [onclick], .project-card, input, textarea';
+        
+        const addHoverClass = () => cursorOutline.classList.add('hover');
+        const removeHoverClass = () => cursorOutline.classList.remove('hover');
+
+        const attachHoverListeners = () => {
+            document.querySelectorAll(interactiveElements).forEach(el => {
+                el.addEventListener('mouseenter', addHoverClass);
+                el.addEventListener('mouseleave', removeHoverClass);
+            });
+        };
+
+        attachHoverListeners();
+
+        // Re-attach listeners when page content changes (if needed)
+        // Since we use a single page app structure, we might need to re-scan if new elements are added
+        // but for now, the static elements are covered.
+        
+        // Hide cursor when leaving window
+        document.addEventListener('mouseleave', () => {
+            cursorDot.style.opacity = '0';
+            cursorOutline.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            cursorDot.style.opacity = '1';
+            cursorOutline.style.opacity = '1';
+        });
+
+       
+
+    </script>
+</body>
+</html>
